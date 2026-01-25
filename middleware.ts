@@ -10,11 +10,6 @@ export default clerkMiddleware(async (auth, req) => {
     await auth.protect();
   }
 
-  const validAuthRoutes = ["/selectOrg"];
-  if (orgId) {
-    validAuthRoutes.push(`/organization/${orgId}`);
-  }
-
   if (isAuthenticated && isPublicRoute(req)) {
     const path = orgId ? `/organization/${orgId}` : "/selectOrg";
     const url = new URL(path, req.url);
@@ -23,7 +18,12 @@ export default clerkMiddleware(async (auth, req) => {
 
   // Ensure authenticated users are only on valid routes
   if (isAuthenticated) {
-    const isValidRoute = validAuthRoutes.includes(req.nextUrl.pathname);
+    const pathname = req.nextUrl.pathname;
+
+    // Check if user is on a valid route based on their orgId
+    const isValidRoute =
+      pathname === "/selectOrg" ||
+      (orgId && pathname.startsWith(`/organization/${orgId}`));
 
     if (!isValidRoute) {
       const correctPath = orgId ? `/organization/${orgId}` : "/selectOrg";
