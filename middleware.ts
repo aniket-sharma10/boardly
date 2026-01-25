@@ -22,8 +22,7 @@ export default clerkMiddleware(async (auth, req) => {
 
     // Check if user is on a valid route based on their orgId
     const isValidRoute =
-      pathname === "/selectOrg" ||
-      (orgId && pathname.startsWith(`/organization/${orgId}`));
+      pathname === "/selectOrg" || pathname.startsWith("/organization/org_");
 
     if (!isValidRoute) {
       const correctPath = orgId ? `/organization/${orgId}` : "/selectOrg";

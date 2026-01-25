@@ -78,6 +78,7 @@ const SideBar = ({ storageKey = "sidebar-state" }: SidebarProps) => {
           </Link>
         </Button>
       </div>
+      <Separator />
       <Accordion
         type="multiple"
         defaultValue={defaultAccordianValue}
