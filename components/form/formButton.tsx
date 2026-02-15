@@ -22,7 +22,7 @@ export const FormButton = ({
   children,
   disabled,
   className,
-  variant = "default",
+  variant = "primary",
 }: FormButtonProps) => {
   const { pending } = useFormStatus();
   return (
