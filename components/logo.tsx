@@ -6,7 +6,7 @@ interface LogoProps {
 }
 const Logo = ({ variant = "lg" }: LogoProps) => {
   return (
-    <Link href="/">
+    <Link href="/" className="overflow-hidden">
       <div className="hover:opacity-75 transition items-center hidden md:flex">
         <Image
           src="/Boardly.svg"

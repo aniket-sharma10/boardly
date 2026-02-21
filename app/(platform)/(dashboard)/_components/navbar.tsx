@@ -10,9 +10,9 @@ export const Navbar = () => {
   return (
     <nav className="fixed px-4 pl-0 z-50 top-0 w-full h-14 border-b shadow-sm bg-white flex items-center">
       <MobileSidebar />
-      <div className="flex items-center">
-        <div className="hidden sm:flex w-fit md:ml-[-25px]">
-          <Logo />
+      <div className="flex items-center gap-4 pl-3">
+        <div className="hidden sm:flex w-fit">
+          <Logo variant="sm" />
         </div>
         <FormPopover align="start" sideOffset={15} side="bottom">
           <Button
