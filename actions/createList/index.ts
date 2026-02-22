@@ -1,0 +1,60 @@
+"use server";
+
+import { auth } from "@clerk/nextjs/server";
+
+import { db } from "@/lib/db";
+import { InputType, ReturnType } from "./types";
+import { revalidatePath } from "next/cache";
+import { createSafeAction } from "@/lib/createSafeAction";
+import { createListSchema } from "./schema";
+
+const handler = async (data: InputType): Promise<ReturnType> => {
+  const { userId, orgId } = await auth();
+
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized",
+    };
+  }
+
+  const { title, boardId } = data;
+  let list;
+
+  try {
+    const board = await db.board.findUnique({
+      where: {
+        id: boardId,
+        orgId,
+      },
+    });
+
+    if (!board) {
+      return {
+        error: "Board not found",
+      };
+    }
+
+    const lastList = await db.list.findFirst({
+      where: { boardId },
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
+
+    list = await db.list.create({
+      data: {
+        title,
+        boardId,
+        order: lastList ? lastList.order + 1 : 1,
+      },
+    });
+  } catch {
+    return {
+      error: "Failed to create list",
+    };
+  }
+
+  revalidatePath(`/board/${boardId}`);
+  return { data: list };
+};
+
+export const createList = createSafeAction(createListSchema, handler);

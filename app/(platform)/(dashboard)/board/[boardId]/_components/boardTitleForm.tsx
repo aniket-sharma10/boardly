@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FormInput } from "@/components/form/formInput";
 import { Button } from "@/components/ui/button";
 import { Board } from "@/lib/generated/prisma/client";
@@ -13,8 +13,8 @@ interface BoardTitleFormProps {
 }
 export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const formRef = useRef<ComponentRef<"form">>(null);
-  const inputRef = useRef<ComponentRef<"input">>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState(data.title);
   const { execute } = useAction(updateBoard, {
     onSuccess: (data) => {

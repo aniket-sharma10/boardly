@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentRef, useRef } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +32,7 @@ export const FormPopover = ({
   align = "center",
   sideOffset = 0,
 }: FormPopoverProps) => {
-  const closeRef = useRef<ComponentRef<"button">>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   const { execute, fieldErrors } = useAction(createBoard, {
