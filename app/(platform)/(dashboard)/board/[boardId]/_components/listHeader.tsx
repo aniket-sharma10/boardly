@@ -1,8 +1,11 @@
 "use client";
 
+import { updateList } from "@/actions/updateList";
 import { FormInput } from "@/components/form/formInput";
+import { useAction } from "@/hooks/useAction";
 import { List } from "@/lib/generated/prisma/client";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
 
 interface ListHeaderProps {
@@ -14,6 +17,29 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const { execute } = useAction(updateList, {
+    onSuccess: (data) => {
+      toast.success(`List renamed to "${data.title}"`);
+      setTitle(data.title);
+      setIsEditing(false);
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
+  const handleSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+
+    if (title === data.title) {
+      setIsEditing(false);
+      return;
+    }
+
+    execute({ id, title, boardId });
+  };
 
   const handleEditing = () => {
     setIsEditing(true);
@@ -32,7 +58,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
   return (
     <div className="pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2">
       {isEditing ? (
-        <form className="flex-1 px-0.5">
+        <form ref={formRef} action={handleSubmit} className="flex-1 px-0.5">
           <input hidden readOnly id="id" name="id" value={data.id} />
           <input
             hidden
@@ -45,10 +71,11 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
             id="title"
             ref={inputRef}
             defaultValue={title}
-            onBlur={() => setIsEditing(false)}
+            onBlur={() => formRef.current?.requestSubmit()}
             placeholder="Enter list title..."
             className="h-7 truncate border-transparent bg-transparent px-[7px] py-1 text-sm font-medium transition hover:border-input focus:border-input focus:bg-white"
           />
+          <button hidden type="submit" />
         </form>
       ) : (
         <div
