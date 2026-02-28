@@ -4,14 +4,14 @@ import { db } from "@/lib/db";
 import { ListContainer } from "./_components/listContainer";
 
 interface BoardIdPageProps {
-  params: {
+  params: Promise<{
     boardId: string;
-  };
+  }>;
 }
 
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const { orgId } = await auth();
-  const { boardId } = params;
+  const { boardId } = await params;
 
   if (!orgId) {
     return redirect("/selectOrg");
