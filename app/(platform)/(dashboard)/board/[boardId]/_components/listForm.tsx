@@ -36,13 +36,11 @@ export const ListForm = () => {
     });
   };
 
-  const onKeyDown = (e: KeyboardEvent) => {
+  useEventListener("keydown", (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       setIsEditing(false);
     }
-  };
-
-  useEventListener("keydown", onKeyDown);
+  });
   useOnClickOutside(formRef as React.RefObject<HTMLElement>, () =>
     setIsEditing(false),
   );
@@ -68,7 +66,7 @@ export const ListForm = () => {
             className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition-all"
             placeholder="Enter list title..."
           />
-          <input hidden value={params.boardId} name="boardId" />
+          <input hidden value={params.boardId} readOnly name="boardId" />
           <div className="flex items-center justify-between gap-x-1">
             <FormButton>Add list</FormButton>
             <Button
@@ -89,7 +87,7 @@ export const ListForm = () => {
       {/* <form className="w-full p-3 bg-white rounded-md space-y-4 shadow-md"> */}
       <Button
         onClick={handleEditing}
-        className="w-full rounded-md text-black/80 bg-white/80 hover:bg-white/50 transition p-5 flex items-center justify-start text-sm font-medium"
+        className="w-full rounded-md text-black/80 bg-white/80 hover:bg-white/50 transition p-5.5 flex items-center justify-start text-sm font-medium"
       >
         <Plus className="w-4 h-4 mr-2" />
         Add a list
