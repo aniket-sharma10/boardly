@@ -26,6 +26,8 @@ export const useAction = <TInput, TOutput>(
   const execute = useCallback(
     async (data: TInput) => {
       setIsLoading(true);
+      setFieldErrors(undefined);
+      setError(undefined);
 
       try {
         const result = await action(data);

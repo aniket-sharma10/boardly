@@ -71,6 +71,7 @@ export const ListForm = () => {
             <FormButton>Add list</FormButton>
             <Button
               onClick={() => setIsEditing(false)}
+              type="button"
               size="sm"
               variant="ghost"
             >
