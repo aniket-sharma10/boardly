@@ -31,7 +31,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
   } catch {
     return {
-      error: "Failed to delete board",
+      error: "Failed to delete list",
     };
   }
 
