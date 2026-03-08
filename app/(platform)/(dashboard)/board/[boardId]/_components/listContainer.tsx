@@ -8,6 +8,7 @@ import { ListItem } from "./listItem";
 import { useAction } from "@/hooks/useAction";
 import { updateListOrder } from "@/actions/updateListOrder";
 import { toast } from "sonner";
+import { updateCardOrder } from "@/actions/updateCardOrder";
 
 interface ListContainerProps {
   lists: ListWithCards[];
@@ -25,6 +26,10 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(lists);
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => toast.success("List reordered!"),
+    onError: (error) => toast.error(error),
+  });
+  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => toast.success("Card reordered!"),
     onError: (error) => toast.error(error),
   });
 
@@ -55,7 +60,7 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
     }
 
     if (type === "card") {
-      let newOrderedData = [...orderedData];
+      const newOrderedData = [...orderedData];
       const sourceList = newOrderedData.find(
         (list) => list.id === source.droppableId,
       );
@@ -88,6 +93,7 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
 
         sourceList.cards = reorderCards;
         setOrderedData(newOrderedData);
+        executeUpdateCardOrder({ boardId, items: reorderCards });
       } else {
         const [movedCard] = sourceList.cards.splice(source.index, 1);
         movedCard.listId = destination.droppableId;
@@ -100,6 +106,7 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
           card.order = index;
         });
         setOrderedData(newOrderedData);
+        executeUpdateCardOrder({ boardId, items: destinationList.cards });
       }
     }
   };
