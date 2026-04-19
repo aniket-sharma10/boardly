@@ -24,7 +24,8 @@ export default clerkMiddleware(async (auth, req) => {
     const isValidRoute =
       pathname === "/selectOrg" ||
       pathname.startsWith("/organization/org_") ||
-      pathname.startsWith("/board/");
+      pathname.startsWith("/board/") ||
+      pathname.startsWith("/api/");
 
     if (!isValidRoute) {
       const correctPath = orgId ? `/organization/${orgId}` : "/selectOrg";
