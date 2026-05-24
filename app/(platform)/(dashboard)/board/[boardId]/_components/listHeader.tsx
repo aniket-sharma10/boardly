@@ -3,7 +3,7 @@
 import { updateList } from "@/actions/updateList";
 import { FormInput } from "@/components/form/formInput";
 import { useAction } from "@/hooks/useAction";
-import { List } from "@/lib/generated/prisma/client";
+import type { List } from "@/lib/generated/prisma/browser";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";

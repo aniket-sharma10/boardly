@@ -1,4 +1,4 @@
-import { Board } from "@/lib/generated/prisma/client";
+import type { Board } from "@/lib/generated/prisma/browser";
 import { BoardTitleForm } from "./boardTitleForm";
 import { BoardOptions } from "./boardOptions";
 

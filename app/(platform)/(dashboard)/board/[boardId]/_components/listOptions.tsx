@@ -1,4 +1,4 @@
-import { List } from "@/lib/generated/prisma/client";
+import type { List } from "@/lib/generated/prisma/browser";
 import {
   Popover,
   PopoverClose,

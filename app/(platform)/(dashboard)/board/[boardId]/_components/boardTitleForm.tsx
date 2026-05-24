@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { FormInput } from "@/components/form/formInput";
 import { Button } from "@/components/ui/button";
-import { Board } from "@/lib/generated/prisma/client";
+import type { Board } from "@/lib/generated/prisma/browser";
 import { useAction } from "@/hooks/useAction";
 import { toast } from "sonner";
 import { updateBoard } from "@/actions/updateBoard";
