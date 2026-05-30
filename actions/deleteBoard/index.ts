@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { deleteBoardSchema } from "./schema";
 import { redirect } from "next/navigation";
+import { decrementAvailableCount } from "@/lib/orgLimit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -29,6 +30,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         orgId,
       },
     });
+
+    await decrementAvailableCount();
 
     await createAuditLog({
       entityId: board.id,

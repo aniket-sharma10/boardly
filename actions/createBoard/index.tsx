@@ -9,6 +9,7 @@ import { InputType, ReturnType } from "./types";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { createBoardSchema } from "./schema";
+import { incrementAvailableCount, hasAvailableCount } from "@/lib/orgLimit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -16,6 +17,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   if (!userId || !orgId) {
     return {
       error: "Unauthorized",
+    };
+  }
+
+  const hasCount = await hasAvailableCount();
+  if (!hasCount) {
+    return {
+      error: "Board limit reached. Please upgrade to Pro for unlimited boards.",
     };
   }
 
@@ -49,6 +57,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageUserName,
       },
     });
+
+    await incrementAvailableCount();
 
     await createAuditLog({
       entityId: board.id,

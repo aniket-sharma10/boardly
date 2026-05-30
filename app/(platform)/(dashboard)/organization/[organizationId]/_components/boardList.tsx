@@ -6,6 +6,8 @@ import { Tooltip } from "@/components/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HelpCircle, User2 } from "lucide-react";
 import { db } from "@/lib/db";
+import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { getAvailableCount } from "@/lib/orgLimit";
 
 export const BoardList = async () => {
   const { orgId } = await auth();
@@ -22,6 +24,8 @@ export const BoardList = async () => {
       createdAt: "desc",
     },
   });
+
+  const availableCount = await getAvailableCount();
 
   return (
     <div className="space-y-4">
@@ -56,7 +60,9 @@ export const BoardList = async () => {
             className="h-full w-full relative aspect-video bg-muted rounded-sm flex flex-col items-center justify-center gap-y-1 hover:opacity-75 transition"
           >
             <p className="text-sm font-semibold">Create New Board</p>
-            <p className="text-xs">5 remaining</p>
+            <p className="text-xs">
+              {MAX_FREE_BOARDS - availableCount} remaining
+            </p>
             <Tooltip
               sideOffset={75}
               side="right"
