@@ -14,10 +14,10 @@ export const checkSubscription = async () => {
       orgId,
     },
     select: {
-      stripeSubscriptionId: true,
-      stripeCurrentPeriodEnd: true,
-      stripeCustomerId: true,
-      stripePriceId: true,
+      razorpaySubscriptionId: true,
+      razorpayCurrentPeriodEnd: true,
+      razorpayCustomerId: true,
+      razorpayPriceId: true,
     },
   });
 
@@ -26,9 +26,9 @@ export const checkSubscription = async () => {
   }
 
   const isValid =
-    !!subscription.stripePriceId &&
-    !!subscription.stripeCurrentPeriodEnd &&
-    subscription.stripeCurrentPeriodEnd.getTime() + DAY_IN_MS > Date.now();
+    !!subscription.razorpayPriceId &&
+    !!subscription.razorpayCurrentPeriodEnd &&
+    subscription.razorpayCurrentPeriodEnd.getTime() + DAY_IN_MS > Date.now();
 
   return !!isValid;
 };

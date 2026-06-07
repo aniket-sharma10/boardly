@@ -1,7 +1,12 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/signin(.*)", "/signup(.*)"]);
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/signin(.*)",
+  "/signup(.*)",
+  "/api/webhooks/razorpay",
+]);
 
 export default clerkMiddleware(async (auth, req) => {
   const { isAuthenticated, orgId } = await auth();

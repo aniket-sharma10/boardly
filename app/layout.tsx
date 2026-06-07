@@ -13,6 +13,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
+export {};
+
 export const metadata: Metadata = {
   title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,

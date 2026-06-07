@@ -82,12 +82,12 @@ model OrgLimit {
 }
 
 model OrgSubscription {
-  id                     String    @id @default(uuid())
-  orgId                  String    @unique
-  stripeCustomerId       String?   @unique
-  stripeSubscriptionId   String?   @unique
-  stripePriceId          String?
-  stripeCurrentPeriodEnd DateTime?
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  id                       String    @id @default(uuid())
+  orgId                    String    @unique
+  razorpayCustomerId       String?   @unique
+  razorpaySubscriptionId   String?   @unique
+  razorpayPriceId          String?
+  razorpayCurrentPeriodEnd DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
 }

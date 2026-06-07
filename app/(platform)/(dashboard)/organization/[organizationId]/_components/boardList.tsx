@@ -8,6 +8,7 @@ import { HelpCircle, User2 } from "lucide-react";
 import { db } from "@/lib/db";
 import { MAX_FREE_BOARDS } from "@/constants/boards";
 import { getAvailableCount } from "@/lib/orgLimit";
+import { checkSubscription } from "@/lib/subscription";
 
 export const BoardList = async () => {
   const { orgId } = await auth();
@@ -25,7 +26,8 @@ export const BoardList = async () => {
     },
   });
 
-  const availableCount = await getAvailableCount();
+  const isPro = await checkSubscription();
+  const availableCount = isPro ? null : await getAvailableCount();
 
   return (
     <div className="space-y-4">
@@ -61,12 +63,18 @@ export const BoardList = async () => {
           >
             <p className="text-sm font-semibold">Create New Board</p>
             <p className="text-xs">
-              {MAX_FREE_BOARDS - availableCount} remaining
+              {isPro
+                ? "Unlimited boards"
+                : `${MAX_FREE_BOARDS - availableCount!} remaining`}
             </p>
             <Tooltip
               sideOffset={75}
               side="right"
-              description={`Free Workspaces can have up to 5 open boards. For unlimited boards, upgrade to Pro plan.`}
+              description={
+                isPro
+                  ? "Your workspace is on the Pro plan with unlimited boards."
+                  : "Free Workspaces can have up to 5 open boards. For unlimited boards, upgrade to Pro plan."
+              }
             >
               <HelpCircle className="absolute bottom-2 right-2 h-3.5 w-3.5" />
             </Tooltip>

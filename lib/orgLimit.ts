@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 import { MAX_FREE_BOARDS } from "../constants/boards";
 import { db } from "./db";
 

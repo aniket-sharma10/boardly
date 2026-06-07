@@ -11,6 +11,7 @@ import { createSafeAction } from "@/lib/createSafeAction";
 import { deleteBoardSchema } from "./schema";
 import { redirect } from "next/navigation";
 import { decrementAvailableCount } from "@/lib/orgLimit";
+import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -22,6 +23,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const { id } = data;
+  const isPro = await checkSubscription();
 
   try {
     const board = await db.board.delete({
@@ -31,7 +33,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
 
-    await decrementAvailableCount();
+    if (!isPro) {
+      await decrementAvailableCount();
+    }
 
     await createAuditLog({
       entityId: board.id,
