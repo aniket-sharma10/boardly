@@ -14,8 +14,21 @@ const geistMono = Geist_Mono({
 });
 
 declare global {
+  type RazorpayOptions = {
+    key?: string;
+    subscription_id: string;
+    name: string;
+    description: string;
+    theme?: {
+      color?: string;
+    };
+    handler?: () => void;
+  };
+
   interface Window {
-    Razorpay: any;
+    Razorpay: new (options: RazorpayOptions) => {
+      open: () => void;
+    };
   }
 }
 

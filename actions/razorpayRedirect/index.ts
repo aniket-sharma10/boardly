@@ -2,11 +2,11 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 
-import { db } from "@/lib/db";
 import { ReturnType } from "./types";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { razorpayRedirectSchema } from "./schema";
 import { razorpay } from "@/lib/razorpay";
+import { getSubscription } from "@/lib/subscription";
 
 const handler = async (): Promise<ReturnType> => {
   const { userId, orgId } = await auth();
@@ -19,19 +19,11 @@ const handler = async (): Promise<ReturnType> => {
   }
 
   try {
-    const orgSubscription = await db.orgSubscription.findUnique({
-      where: {
-        orgId,
-      },
-    });
+    const activeSubscription = await getSubscription();
 
-    const isSubscribed =
-      orgSubscription?.razorpayCurrentPeriodEnd &&
-      orgSubscription.razorpayCurrentPeriodEnd > new Date();
-
-    if (isSubscribed) {
+    if (activeSubscription) {
       return {
-        error: "Organization is already subscribed.",
+        error: "Your account already has an active Pro subscription.",
       };
     }
 
@@ -41,6 +33,7 @@ const handler = async (): Promise<ReturnType> => {
       customer_notify: 1,
       notes: {
         orgId,
+        userId,
         email: user.emailAddresses[0].emailAddress,
       },
     });

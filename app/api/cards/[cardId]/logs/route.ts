@@ -5,9 +5,10 @@ import { Entity_Type } from "@/lib/generated/prisma/browser";
 
 export async function GET(
   request: Request,
-  { params }: { params: { cardId: string } },
+  { params }: { params: Promise<{ cardId: string }> },
 ) {
   try {
+    const { cardId } = await params;
     const { userId, orgId } = await auth();
 
     if (!userId || !orgId) {
@@ -17,7 +18,7 @@ export async function GET(
     const logs = await db.auditLog.findMany({
       where: {
         orgId,
-        entityId: params.cardId,
+        entityId: cardId,
         entityType: Entity_Type.CARD,
       },
       orderBy: {

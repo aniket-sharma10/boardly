@@ -8,6 +8,7 @@ import { useAction } from "@/hooks/useAction";
 import { Plus, X } from "lucide-react";
 import { useParams } from "next/navigation";
 import { forwardRef, useRef } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { toast } from "sonner";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
 
@@ -51,7 +52,9 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
       }
     };
 
-    const onTextareakeyDown = (e: KeyboardEvent) => {
+    const onTextareakeyDown = (
+      e: ReactKeyboardEvent<HTMLTextAreaElement>,
+    ) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         formRef.current?.requestSubmit();

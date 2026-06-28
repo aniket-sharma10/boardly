@@ -15,12 +15,25 @@ interface FormPickerProps {
   errors?: Record<string, string[] | undefined>;
 }
 
+type BoardImage = {
+  id: string;
+  urls: {
+    thumb: string;
+    full: string;
+  };
+  links: {
+    html: string;
+  };
+  user: {
+    name: string;
+  };
+};
+
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
   const { pending } = useFormStatus();
-  const [images, setImages] =
-    useState<Array<Record<string, any>>>(defaultImages);
+  const [images, setImages] = useState<BoardImage[]>(defaultImages);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedImageId, setSelectedImageId] = useState(null);
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -32,7 +45,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
           count: 9,
         });
         if (result && result.response) {
-          setImages(result.response as Array<Record<string, any>>);
+          setImages(result.response as BoardImage[]);
         } else {
           console.log("Failed to fetch images");
         }

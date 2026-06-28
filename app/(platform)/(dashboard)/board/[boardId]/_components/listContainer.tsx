@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import type { DropResult } from "@hello-pangea/dnd";
 import { ListWithCards } from "@/types";
 import { ListForm } from "./listForm";
 import { ListItem } from "./listItem";
@@ -76,8 +77,8 @@ export const ListContainer = ({ lists, boardId }: ListContainerProps) => {
         sourceList.cards = [];
       }
 
-      if (!destination.cards) {
-        destination.cards = [];
+      if (!destinationList.cards) {
+        destinationList.cards = [];
       }
 
       if (source.droppableId === destination.droppableId) {
